@@ -80,4 +80,4 @@ if __name__ == "__main__":
         save_news_to_db(articles)
         print(f"Successfully saved {len(articles)} articles with sentiment scores to MySQL.")
     else:
-        print("No articles fetched.")
+        print("No articles fetched. Im a silly goose")
