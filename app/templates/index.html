@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Dashboard</title>
+    <link rel="stylesheet" href=".\static\style.css">
+</head>
+
+<body>
+    <div class="container">
+        <form method="get" action="/" style="margin-bottom: 20px;">
+            <label for="sentiment">Filter by Sentiment:</label>
+            <select name="sentiment" id="sentiment">
+                <option value="">All</option>
+                <option value="positive">Positive</option>
+                <option value="neutral">Neutral</option>
+                <option value="negative">Negative</option>
+            </select>
+        
+            <label for="keyword">Keyword:</label>
+            <input type="text" name="keyword" id="keyword" placeholder="Search title or description">
+        
+            <button type="submit">Apply Filters</button>
+        </form>
+        
+    </div>
+    <div class="container">
+        <h1>News Articles and Sentiment Analysis</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Published At</th>
+                    <th>Sentiment Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in news_data %}
+                <tr>
+                    <td>{{ article.title }}</td>
+                    <td>{{ article.description }}</td>
+                    <td>{{ article.publishedAt }}</td>
+                    <td>{{ article.sentiment_score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <h2>Sentiment Distribution</h2>
+        <div id="charts">
+            <div id="pie-chart" style="width:45%; display:inline-block;"></div>
+            <div id="bar-chart" style="width:45%; display:inline-block;"></div>
+        </div>
+
+        <!-- Include Plotly -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+        <script type="text/javascript">
+
+            const sentimentData = {{ sentiment_counts | safe }};
+
+            const labels = Object.keys(sentimentData);
+            const values = Object.values(sentimentData);
+
+            // Pie chart
+            const pieData = [{
+                values: values,
+                labels: labels,
+                type: 'pie',
+                marker: {
+                    colors: ['#2ecc71', '#f1c40f', '#e74c3c']
+                }
+            }];
+
+            Plotly.newPlot('pie-chart', pieData, {
+                title: 'Sentiment Breakdown (Pie Chart)'
+            });
+
+            // Bar chart
+            const barData = [{
+                x: labels,
+                y: values,
+                type: 'bar',
+                marker: {
+                    color: ['#2ecc71', '#f1c40f', '#e74c3c']
+                }
+            }];
+
+            Plotly.newPlot('bar-chart', barData, {
+                title: 'Sentiment Breakdown (Bar Chart)'
+            });
+        </script>
+    </div>
+    <div class="container">
+        <h2>Sentiment Over Time</h2>
+        <div id="line-chart" style="width:100%;"></div>
+
+        <script>
+            const trendData = {{ sentiment_trend | safe }};
+            console.log('Sentiment Trend:', trendData);
+
+            const lineTrace = {
+                x: trendData.dates,
+                y: trendData.scores,
+                type: 'scatter',
+                mode: 'lines+markers',
+                marker: { color: '#3498db' },
+                line: { shape: 'spline' }
+            };
+
+            const layout = {
+                title: 'Average Sentiment Over Time',
+                xaxis: { title: 'Date' },
+                yaxis: { title: 'Sentiment Score', range: [-1, 1] }
+            };
+
+            Plotly.newPlot('line-chart', [lineTrace], layout);
+        </script>
+
+    </div>
+</body>
+
+</html>
