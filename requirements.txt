@@ -1,0 +1,7 @@
+Flask
+requests
+SQLAlchemy
+mysql-connector-python
+textblob
+pytest
+python-dotenv
