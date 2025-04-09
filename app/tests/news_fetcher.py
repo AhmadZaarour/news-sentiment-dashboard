@@ -1,4 +1,5 @@
 import requests
+import sqlalchemy
 from sqlalchemy import create_engine, Column, String, DateTime, Float, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -16,7 +17,7 @@ NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Set up SQLAlchemy
-Base = declarative_base()
+Base = sqlalchemy.orm.declarative_base()
 
 class NewsArticle(Base):
     __tablename__ = "news_articles"
@@ -80,4 +81,4 @@ if __name__ == "__main__":
         save_news_to_db(articles)
         print(f"Successfully saved {len(articles)} articles with sentiment scores to MySQL.")
     else:
-        print("No articles fetched. Im a silly goose")
+        print("No articles fetched.")

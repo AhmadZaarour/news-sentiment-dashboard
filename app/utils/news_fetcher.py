@@ -1,4 +1,5 @@
 import requests
+import sqlalchemy
 from sqlalchemy import create_engine, Column, String, DateTime, Text, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -16,10 +17,10 @@ NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Set up SQLAlchemy
-Base = declarative_base()
+Base = sqlalchemy.orm.declarative_base()
 
 class NewsArticle(Base):
-    __tablename__ = "news_articles_2"
+    __tablename__ = "news_articles"
     title = Column(String(100))
     description = Column(String(200))
     content = Column(Text)

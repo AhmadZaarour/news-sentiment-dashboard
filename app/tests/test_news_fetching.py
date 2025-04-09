@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
+
 @pytest.fixture
 
 def test_analyze_sentiment_positive():
@@ -28,7 +29,7 @@ def db_session():
     Session = sessionmaker(bind=engine)
     return Session()
 
-def test_save_article(db_session):
+def test_save_article(db_session=db_session()):
     article = NewsArticle(
         title="Test News",
         description="This is a test article",
