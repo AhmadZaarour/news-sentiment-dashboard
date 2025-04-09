@@ -1,5 +1,5 @@
 import requests
-from sqlalchemy import create_engine, Column, String, DateTime
+from sqlalchemy import create_engine, Column, String, DateTime, Text, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -19,14 +19,14 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 Base = declarative_base()
 
 class NewsArticle(Base):
-    __tablename__ = "news_articles"
-    title = Column(String)
-    description = Column(String)
-    content = Column(String)
+    __tablename__ = "news_articles_2"
+    title = Column(String(100))
+    description = Column(String(200))
+    content = Column(Text)
     publishedAt = Column(DateTime)
-    source = Column(String)
-    url = Column(String, primary_key=True)
-    sentiment_score = Column(String)
+    source = Column(String(100))
+    url = Column(String(150), primary_key=True)
+    sentiment_score = Column(Float)
 
 # Set up database engine and session
 engine = create_engine(DATABASE_URL)
